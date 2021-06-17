@@ -1,5 +1,6 @@
 ## Install Virtual Environment
-```As Django works with Python Its better to create a Virtual Environment.
+```
+As Django works with Python Its better to create a Virtual Environment.
 - virtualenv <envname> --python=python3
     - type this command to create a virtual environment, where envname can be any name chosen by user.
 - To Activate Virtual Environment
@@ -9,7 +10,8 @@
 ```
 
 ## Instal required libraries from requirements.txt
-```Libraries required for working of Flask, all libraries are stored in requirements.txt 
+```
+Libraries required for working of Django Project, all libraries are stored in requirements.txt 
 To Install type this command.
 - pip install -r requirements.txt    
 ```
