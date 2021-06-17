@@ -36,6 +36,10 @@
               <br>
             </div>
       </form>
+      {% if message %}
+        <h5 style="color: #FF0000;">{{ message }}</h5>
+      {% endif %}
+      
       <br>
       <div class="container">
         {% if Search_Username and currentFlag %}   

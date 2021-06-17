@@ -6,6 +6,7 @@
     <h1>Register User Page</h1>
     <br>
     <br>
+    <td><button class="btn btn-primary" onclick="location.href = '/network/login'">Login Page</button></td>
     <br>
     <br>
     <div class="container" style="width: 40%;">
@@ -25,6 +26,11 @@
               <input class="btn btn-primary" type="submit" value="Submit" />
             </div>
       </form>
+      <br>
+      <br>
+      {% if message %}
+        <h5 style="color: #FF0000;">{{ message }}</h5>
+      {% endif %}
     </div>
 </div>
 </center>

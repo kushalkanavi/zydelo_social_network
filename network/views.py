@@ -7,13 +7,17 @@ from .models import Post, User
 
 def login(request):
     if request.method == 'POST':
-        UserName = request.POST['user']
-        Password = request.POST['pass']
+        try:
+            UserName = request.POST['user']
+            Password = request.POST['pass']
 
-        log_user = User.nodes.get(name=UserName)
-        request.session['user_id'] = log_user.uid
+            log_user = User.nodes.get(name=UserName)
+            request.session['user_id'] = log_user.uid
 
-        check_pass = check_password(Password, log_user.Passwoed)
+            check_pass = check_password(Password, log_user.Passwoed)
+        except:
+            data = {'message' : 'Username Doesnt Exists, Create New User from Register'}
+            return render(request,'login.html', data)
         
         if check_pass:
             return redirect(index)
@@ -26,19 +30,18 @@ def login(request):
 
 def register(request):
     if request.method == 'POST':
-        UserName = request.POST['user']
-        Password = request.POST['pass']
+        try:
+            UserName = request.POST['user']
+            Password = request.POST['pass']
 
-        new_password = make_password(Password)
+            new_password = make_password(Password)
 
-        new_user = User(name=UserName, Passwoed=new_password)
-        new_user.save()
-        
-        # new_password = make_password(Password)
-        check_pass = check_password(Password, new_password)
+            new_user = User(name=UserName, Passwoed=new_password)
+            new_user.save()
 
-        print('new_password : ', new_password)
-        print('check_pass : ', check_pass)
+        except Exception as e:
+            data = {'message' : str(e) + ' Try different Username'}
+            return render(request,'register.html', data)
         
         return render(request,'login.html')
     
@@ -48,25 +51,29 @@ def register(request):
 
 def index(request):
     if request.method == 'POST':
-        user_id = request.session['user_id']
-        current_user = User.nodes.get(uid=user_id)
-        current = False
-        Follow = False
-        user = request.POST['user']
-        search_user = User.nodes.get(name=user)
+        try:
+            user_id = request.session['user_id']
+            current_user = User.nodes.get(uid=user_id)
+            current = False
+            Follow = False
+            user = request.POST['user']
+            search_user = User.nodes.get(name=user)
         
-        if search_user.uid == user_id:
-            current = True
-        
-        for follow_user in current_user.follows.all():
-            if follow_user.name == search_user.name:
-                Follow = True
+            if search_user.uid == user_id:
+                current = True
             
-        if current:
-            data = {'CurrentUser': current_user.name,'Search_Username': search_user.name, 'currentFlag': current, 'followFlag': Follow}
-        else:
-            data = {'CurrentUser': current_user.name,'Search_Username': search_user.name, 'currentFlag': current, 'followFlag': Follow}
-        return render(request,'index.html', data)
+            for follow_user in current_user.follows.all():
+                if follow_user.name == search_user.name:
+                    Follow = True
+                
+            if current:
+                data = {'CurrentUser': current_user.name,'Search_Username': search_user.name, 'currentFlag': current, 'followFlag': Follow}
+            else:
+                data = {'CurrentUser': current_user.name,'Search_Username': search_user.name, 'currentFlag': current, 'followFlag': Follow}
+            return render(request,'index.html', data)
+        except Exception as e:
+            data = {'CurrentUser': current_user.name, 'message': 'User Name Doesnt Exists, Try Some other User Name'}
+            return render(request,'index.html', data)
     
     else:
         user_id = request.session['user_id']
