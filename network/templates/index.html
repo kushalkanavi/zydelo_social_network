@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block content %}{% load static %}
+
+<center>
+    <div class="container" style="margin-top: 5%;">
+        <h1>Current User : {{ CurrentUser }}</h1>
+        <br>
+        <br>
+        <table class="table" style="text-align: center;">
+          <thead>
+          </thead>
+          <tbody>
+            <tr>
+              <td><button class="btn btn-primary" onclick="location.href = '/network/myPosts'">My Post</button></td>
+              <td><button class="btn btn-primary" onclick="location.href = '/network/login'">Logout</button></td>
+              <td><button class="btn btn-primary" onclick="location.href = '/network/index'">Refresh</button></td></th>
+            </tr>
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <form id="register-form" name="register-form" class="nobottommargin" action="/network/index/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col_half">
+              <table class="table" style="text-align: center;">
+                <thead>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" name="user" placeholder="Search for User" class="form-control" /></td>
+                    <td><input class="btn btn-primary" type="submit" value="Search" /></td>
+                  </tr>
+                </tbody>
+              </table>
+              <br>
+            </div>
+      </form>
+      <br>
+      <div class="container">
+        {% if Search_Username and currentFlag %}   
+            <form id="register-form" name="register-form" class="nobottommargin" action="/network/follow/" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="col_half">
+                <input type="hidden" name="user" placeholder="Search for User" class="form-control" value={{Username}} />
+                <table class="table" style="text-align: center;">
+                  <thead>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><h4>{{ Search_Username }}</h4> </td>
+                      <td><input class="btn btn-primary" type="submit" value="Follow" disabled/></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <br>
+              </div>
+            </form>
+          {% elif  Search_Username and not currentFlag %}
+            {% if followFlag %}
+              <form id="register-form" name="register-form" class="nobottommargin" action="/network/unfollow/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="col_half">
+                  <input type="hidden" name="user" placeholder="Search for User" class="form-control" value={{Search_Username}} />
+                  <table class="table" style="text-align: center;">
+                    <thead>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><h4>{{ Search_Username }}</h4> </td>
+                        <td><input class="btn btn-primary" type="submit" value="UnFollow"/></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <br>
+                </div>
+              </form>
+            {% else %}
+                <form id="register-form" name="register-form" class="nobottommargin" action="/network/follow/" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="col_half">
+                    <input type="hidden" name="user" placeholder="Search for User" class="form-control" value={{Search_Username}} />
+                    <table class="table" style="text-align: center;">
+                      <thead>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><h4>{{ Search_Username }}</h4> </td>
+                          <td><input class="btn btn-primary" type="submit" value="Follow"/></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <br>
+                  </div>
+                </form>
+            {% endif %}
+        {% endif %}
+        <table class="table" style="text-align: center;">
+          <thead>
+          </thead>
+          <tbody>
+            {% for e in data_list %}
+            <tr>
+              <td>
+                <h4> User : {{ e.User }} </h4>
+                <br>  <h4> Title : {{ e.Title }} </h4>
+                <br>  <h4> Description : {{ e.Description }} </h4>
+              </td>
+              <td><img src="{% static e.Image %}" alt=""></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <!-- {% for e in data_list %}
+            <h4> {{ e.User }} </h4>
+            <h4> {{ e.Title }} </h4>
+            <h4> {{ e.Description }} </h4>
+            <img src="{% static e.Image %}" alt="">
+        {% endfor %} -->
+      </div>
+    </div>
+</center>
+
+{% endblock content %}
