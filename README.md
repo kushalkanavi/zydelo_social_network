@@ -15,17 +15,15 @@ Libraries required for working of Django Project, all libraries are stored in re
 To Install type this command.
 - pip install -r requirements.txt    
 ```
-
 ## For Database to run smoothly
-```
-    - python manage.py runserver
-```
-
-
-## For running Django Server
 ```
     - python manage.py install_labels
     - python manage.py migrate
+```
+
+## For running Django Server
+```
+    - python manage.py runserver
 ```
 
 ## On Browser
