@@ -40,7 +40,7 @@ def register(request):
             new_user.save()
 
         except Exception as e:
-            data = {'message' : str(e) + ' Try different Username'}
+            data = {'message' : str(e) + 'Try different Username'}
             return render(request,'register.html', data)
         
         return render(request,'login.html')
